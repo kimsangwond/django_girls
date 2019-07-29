@@ -17,7 +17,7 @@ def post_list(request):
 
 
 def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk) #url로 부터 받은 pk 값에 해당하는 post가 없을 경우 page not found 제
+    post = get_object_or_404(Post, pk=pk) #url로 부터 받은 pk 값에 해당하는 post가 없을 경우 page not found 제공/ pk 값이 있을 경우 post에 object를 저장
     return render(request, 'blog/post_detail.html', {'post': post})
 
 def post_new(request):
@@ -37,13 +37,14 @@ def post_new(request):
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
+        form = PostForm(request.POST, instance=post) # 불러올 post를 지정하여 폼에 불러옴
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.published_date = timezone.now()
             post.save()
-            return redirect('post_detail', pk=post.pk)
+            return redirect('post_detail', pk=post.pk) # post_detail이라는 url를 호출
     else:
-        form = PostForm(instance=post)
-    return render(request, 'blog/post_edit.html', {'form': form})
+        form = PostForm(instance=post) # 기존 post를 불러와서 띄어주는 역할
+        #print(form)
+    return render(request, 'blog/post_edit.html', {'form': form}) # post_edit라는 html을 띄어줌

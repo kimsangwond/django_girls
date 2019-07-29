@@ -3,7 +3,7 @@
 {% block content %}
     <h1>New post</h1>
     <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }} <!-- form이 보이도록 해줌 -->
+        {{ form.as_p }} <!-- form이 p로 구분해서 보이도록 줌 -->
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
 {% endblock %}
